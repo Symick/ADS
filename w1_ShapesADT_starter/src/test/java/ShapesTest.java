@@ -2,7 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import java.awt.*;
+import java.awt.Color;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,13 +59,13 @@ class ShapesTest {
         assertNotEquals(rectangle2, rectangle3);
     }
 
-    @Test
-    @Disabled
-    void hashCodeShouldFollowEquals() {
-        assertEquals(circle1.hashCode(), circle2.hashCode());
-        assertEquals(rectangle1.hashCode(), rectangle2.hashCode());
-        assertNotEquals(circle1.hashCode(), circle3.hashCode());
-    }
+//    @Test
+//    @Disabled
+//    void hashCodeShouldFollowEquals() {
+//        assertEquals(circle1.hashCode(), circle2.hashCode());
+//        assertEquals(rectangle1.hashCode(), rectangle2.hashCode());
+//        assertNotEquals(circle1.hashCode(), circle3.hashCode());
+//    }
 
     @Test
     void addRemoveShouldPreserveBoardIntegrity(){
