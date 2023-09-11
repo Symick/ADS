@@ -2,31 +2,38 @@ import java.util.ArrayList;
 
 public class ASimpleList<I> implements SimpleList<I> {
 
-    private I[] arr = (I[]) new Object[1] ;
-    private int count = 0;
-    private int sizeInMemory = 1;
+    private I[] arr;
+    private int size = 0;
+    private int capacity = 2;
+
+    public ASimpleList() {
+        arr = (I[]) new Object[capacity];
+    }
     @Override
     public int size() {
-        return count;
+        return size;
     }
 
     @Override
     public void add(I item) {
-        if (count == sizeInMemory) {
-            growSize();
+        if (size == capacity) {
+            growCapacity();
         }
-        arr[count] = item;
-        count++;
+        arr[size] = item;
+        size++;
     }
 
     @Override
-    public I get(int index) {
+    public I get(int index) throws IndexOutOfBoundsException {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
         return arr[index];
     }
 
     @Override
     public int getIndex(I item) {
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < size; i++) {
             if (arr[i].equals(item)) {
                 return i;
             }
@@ -36,28 +43,28 @@ public class ASimpleList<I> implements SimpleList<I> {
 
     @Override
     public I remove(int index) {
-        if (index < 0 || index > count) {
-            return null;
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
         }
         I item = arr[index];
-        for (int i = index; i < count - 1; i++) {
+        for (int i = index; i < size - 1; i++) {
             arr[i] = arr[i+1];
         }
         // set last item in the list to null
-        arr[count - 1] = null;
-        count--;
+        arr[size - 1] = null;
+        size--;
         return item;
     }
 
-    private void growSize() {
-        I[] temp =(I[]) new Object[sizeInMemory * 2];
+    private void growCapacity() {
+        I[] temp =(I[]) new Object[capacity * 2];
 
         //copy array
-        for (int i = 0; i < sizeInMemory; i++) {
+        for (int i = 0; i < capacity; i++) {
             temp[i] = arr[i];
         }
         arr = temp;
-        sizeInMemory *= 2;
+        capacity *= 2;
     }
 
 }
