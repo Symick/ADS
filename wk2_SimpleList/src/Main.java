@@ -7,12 +7,14 @@ public class Main {
         //testing
         list.add("hallo");
         list.add("test");
-        System.out.println(list.size());
-        System.out.println(list.get(1));
         list.add("Banaan");
-        System.out.println(list.size());
         list.add("Pol");
         list.add("a");
+        list.remove(2);
+
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
+        }
         System.out.println(list.size());
     }
 }

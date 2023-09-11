@@ -36,7 +36,17 @@ public class ASimpleList<I> implements SimpleList<I> {
 
     @Override
     public I remove(int index) {
-        return null;
+        if (index < 0 || index > count) {
+            return null;
+        }
+        I item = arr[index];
+        for (int i = index; i < count - 1; i++) {
+            arr[i] = arr[i+1];
+        }
+        // set last item in the list to null
+        arr[count - 1] = null;
+        count--;
+        return item;
     }
 
     private void growSize() {
