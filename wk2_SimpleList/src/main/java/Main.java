@@ -14,7 +14,7 @@ public class Main {
         for (int i = 0; i < list.size(); i++) {
             System.out.print(list.get(i) + " ");
         }
-        Integer removed = list.remove(2);
+        Integer removed = list.remove(0);
         System.out.println(removed);
         for (int i = 0; i < list.size(); i++) {
             System.out.print(list.get(i) + " ");

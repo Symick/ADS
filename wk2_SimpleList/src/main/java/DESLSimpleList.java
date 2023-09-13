@@ -25,7 +25,7 @@ public class DESLSimpleList<I> implements SimpleList<I> {
 
     @Override
     public I get(int index) throws IndexOutOfBoundsException {
-        if (index < 0 || index > size) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
         Node node = this.head;
@@ -54,15 +54,16 @@ public class DESLSimpleList<I> implements SimpleList<I> {
 
     @Override
     public I remove(int index) {
-        if (index < 0 || index > size) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
         Node current = this.head;
         Node prev = null;
         if (index == 0) {
             I item = current.item;
-            head = current.next;
-            current.next = null;
+            Node temp = current.next;
+            head.next = null;
+            head = temp;
             return item;
         }
         for (int i = 0; i < index; i++) {
