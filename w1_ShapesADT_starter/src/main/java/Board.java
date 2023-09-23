@@ -1,14 +1,49 @@
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class Board {
+public class Board <S extends Shape> implements Iterable<S> {
     private int boardSize;
-    private Shape[][] board;
+    private S[][] board;
 
     public Board(int boardSize) {
         this.boardSize = boardSize;
-        this.board = new Shape[boardSize][boardSize];
+        this.board = (S[][]) new Shape[boardSize][boardSize];
     }
 
-    public boolean add(Shape shape, int x, int y) {
+    private class BoardIterator implements Iterator<S> {
+        private int currentRow = 0;
+        private int currentCol = 0;
+        @Override
+        public boolean hasNext() {
+            return currentRow < board.length && currentCol < board[currentRow].length;
+        }
+
+        @Override
+        public S next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            //get current element
+            S shape = board[currentCol][currentRow];
+
+            currentCol++;
+
+            if (currentCol == board[currentRow].length) {
+                currentCol = 0;
+                currentRow++;
+            }
+
+            return shape;
+        }
+
+    }
+
+    public Iterator<S> iterator() {
+        return new BoardIterator();
+    }
+
+    public boolean add(S shape, int x, int y) {
         if (x < 0 || x >= boardSize || y < 0 || y >= boardSize) {
             throw new IndexOutOfBoundsException(
                     String.format("Position %d,%d is not available on a board of size %d", x, y, boardSize)
@@ -24,7 +59,7 @@ public class Board {
 
     }
 
-    public Shape remove(int x, int y) {
+    public S remove(int x, int y) {
         if (x < 0 || x >= boardSize || y < 0 || y >= boardSize) {
             throw new IndexOutOfBoundsException(
                     String.format("Position %d,%d is not available on a board of size %d", x, y, boardSize)
@@ -34,13 +69,13 @@ public class Board {
         if (board[x][y] == null) {
             return null;
         }
-        Shape shape = board[x][y];
+        S shape = board[x][y];
         board[x][y] = null; //remove shape from array, aka set the grid location to null.
         return shape; // return the shape removed
 
     }
 
-    public Shape[][] getGrid() {
+    public S[][] getGrid() {
         return board;
     }
 

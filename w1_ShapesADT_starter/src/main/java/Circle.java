@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Objects;
 
 public class Circle extends Shape {
     private double radius;
@@ -16,9 +17,15 @@ public class Circle extends Shape {
     @Override
     public boolean equals(Object o) {
         if (o instanceof Circle circle) {
-            return circle.getArea()== this.getArea() && this.getColor() == circle.getColor();
+            System.out.println(this + " " + circle);
+            return circle.getArea()== this.getArea() && super.equals(circle);
         }
 
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), radius);
     }
 }
