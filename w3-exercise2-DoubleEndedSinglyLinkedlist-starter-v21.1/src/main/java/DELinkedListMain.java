@@ -20,18 +20,21 @@ public class DELinkedListMain {
         System.out.println("Word[2]=" + list.get(2));
         System.out.println("Lopen is at position " + list.indexOf("Lopen"));
 
-        list.remove("Lopen");
-        System.out.println(list);
         list.remove(2);
+        list.add(3, "lopen");
+        list.remove(3);
         System.out.println(list);
-        list.remove("Over");
-        System.out.println(list);
-        list.remove("Leerde");
-        System.out.println(list);
-        list.remove(0);
-        System.out.println(list);
-        list.remove("Lange");
-        System.out.println(list);
-        System.out.println(list.size());
+//        list.remove("Lopen");
+//        System.out.println(list);
+//        list.remove(2);
+//        System.out.println(list);
+//        list.remove("Over");
+//        System.out.println(list);
+//        list.remove("Leerde");
+//        System.out.println(list);
+//        list.remove(0);
+//        System.out.println(list);
+//        System.out.println(list);
+//        System.out.println(list.size());
     }
 }

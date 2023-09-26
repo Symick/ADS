@@ -41,6 +41,22 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
         return this.size;
     }
 
+    @Override
+    public boolean add(E e) {
+        Node newNode = new Node(e);
+        //adding the first element
+        if (head == null) {
+            head = newNode;
+            tail = head;
+            size++;
+            return true;
+        }
+        tail.attachInsert(newNode);
+        tail = newNode;
+        size++;
+        return true;
+    }
+
     public Node findNode(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
@@ -95,7 +111,7 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
         prev.attachInsert(newNode);
 
         //if added at the end, set the tail to the new node
-        if (index == size - 1) {
+        if (newNode.next == null) {
             tail = newNode;
         }
 
@@ -131,9 +147,6 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
         } else {
             Node removedNode = prev.removeNext();
             prev.next = removedNode.next;
-
-            //remove potential reference still stored in the removed node
-            removedNode.removeNext();
         }
         size--;
         return removedItem;
@@ -175,8 +188,13 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
     public Object[] toArray() {
         // TODO: populate and return an Object array of items from the list
         //      use java 1.5 extende 'for( : )' syntax, once you have implemented the iterator
-
-        return null;
+        Object[] array = new Object[this.size()];
+        int itemCount = 0;
+        for (E item: this) {
+            array[itemCount] = item;
+            itemCount++;
+        }
+        return array;
     }
 
     /**
@@ -273,6 +291,10 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
             }
             previousNode.removeNext();
             previousNode.next = nextNode;
+
+            //reinstate the current, which was removed to be the previous so the iteration doesn't break
+            // and reference the already deleted node.
+            current = previousNode;
             size--;
         }
     }
