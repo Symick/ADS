@@ -41,22 +41,6 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
         return this.size;
     }
 
-    @Override
-    public boolean add(E e) {
-        Node newNode = new Node(e);
-        //adding the first element
-        if (head == null) {
-            head = newNode;
-            tail = head;
-            size++;
-            return true;
-        }
-        tail.attachInsert(newNode);
-        tail = newNode;
-        size++;
-        return true;
-    }
-
     public Node findNode(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
@@ -106,15 +90,16 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
             return;
         }
 
+        if(index == size) {
+            tail.attachInsert(newNode);
+            tail = newNode;
+            size++;
+            return;
+        }
+
 
         Node prev = findNode(index - 1);
         prev.attachInsert(newNode);
-
-        //if added at the end, set the tail to the new node
-        if (newNode.next == null) {
-            tail = newNode;
-        }
-
         size++;
     }
 
