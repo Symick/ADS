@@ -39,14 +39,7 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
-        // TODO: find the node at the index position and return the item from the node
-        int position = 0;
-        Node current = head;
-        while (index != position) {
-            position++;
-            current = current.next;
-        }
-        return current.item;
+        return findNode(index).item;
     }
 
     @Override
