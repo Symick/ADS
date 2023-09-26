@@ -6,6 +6,19 @@ import java.util.Iterator;
 /**
  * Double Ended singly linked list implementation
  *
+ * This list maintains the following representation invariants:
+ * tail should not have any successor if any
+ * - tail.next == null || tail == null
+ * No node should reference the head because this is the first element
+ * - node.next != head || head == null
+ * No node should be reference by more than one node
+ * - Node1.next == node && anotherNode.next != node
+ * Any node which is not the tail should point to another node
+ * node != tail && node.next == anotherNode
+ * Size should be non-negative
+ * - size >= 0
+ *
+ *
  * @param <E> the type of the items
  */
 public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
@@ -62,6 +75,13 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
      * Existing items after the index position will have their position incremented
      * You can also append an item at the end of the list at position size
      *
+     * This method should maintain the following representation invariants
+     * after insert size should be one bigger and positive
+     * -size > 0 && newSize == size +1;
+     * predecessor of inserted node should reference inserted node in its next, or the inserted not should be the head
+     * -findNode(index-1).next == newNode || newNode == head
+     * Node inserted at the end should be the tail
+     * index == size && new Node(item) == tail
      * @param index
      * @param item
      * @throws IndexOutOfBoundsException if the index position is out of range
@@ -69,12 +89,14 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
     @Override
     public void add(int index, E item) {
         Node newNode = new Node(item);
-        // TODO: check the index parameter against the range of validity
+
+        //add could add node to the end of the list aka. the index which is equal to the size.
+        //for example adding a node to the end of a list of 4 should be with an index of 4, the same as the size.
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
 
-        //if the list is empty head an tail become the new node
+        //if the list is empty head a tail become the new node
         if (size == 0) {
             head = newNode;
             tail = head;
@@ -90,6 +112,8 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
             return;
         }
 
+        //inserting a node at the end. Node is at the end when the index is equal to the size.
+        //You want to add the node after the current last index.
         if(index == size) {
             tail.attachInsert(newNode);
             tail = newNode;
@@ -98,6 +122,7 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
         }
 
 
+        //insert node in the middle.
         Node prev = findNode(index - 1);
         prev.attachInsert(newNode);
         size++;
@@ -130,8 +155,7 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
             tail = prev;
 
         } else {
-            Node removedNode = prev.removeNext();
-            prev.next = removedNode.next;
+           prev.removeNext();
         }
         size--;
         return removedItem;
@@ -217,7 +241,8 @@ public class DELinkedList<E> extends AbstractList<E> implements Iterable<E> {
 
         private Node removeNext() {
             Node toRemove = next;
-            next = null;
+            next = toRemove.next;
+
             return toRemove;
         }
 
