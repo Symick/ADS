@@ -1,0 +1,9 @@
+Kaiser broodje, 0.20, 100
+Kaiser broodje, 0.35, 60
+Pindakaas 600gr, 4.95, 7
+Vruchtenhagel 400gr, 2.75, 8
+Kaiser broodje, 0.40, 80
+Eieren 6st, 1.45, 15
+Roomboter, 1.50, 25
+Eieren 10st, 2.10, 15
+Roomboter, 1.75, 27
