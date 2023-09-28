@@ -68,12 +68,12 @@ public class ProductsInventoryMain {
         while (scanner.hasNext()) {
             // input another line with author information
             String line = scanner.nextLine();
-
-            // TODO convert the line to an instance of E
-
-
-            // TODO add the item to the list of items
-
+            try {
+                E item = converter.apply(line);
+                items.add(item);
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+            }
         }
     }
 }

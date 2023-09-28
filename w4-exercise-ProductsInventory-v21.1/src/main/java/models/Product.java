@@ -26,7 +26,23 @@ public class Product {
     public static Product fromLine(String textLine) {
         Product newProduct = null;
 
-        // TODO convert the information in line to a new Product instance
+        if (textLine == null) return null;
+
+        String[] productInfo = textLine.split(",");
+        //string should contain three pieces of information
+        if (productInfo.length != 3) {
+            return null;
+        }
+        try {
+            String title = productInfo[0].trim();
+            double price = Double.parseDouble(productInfo[1].trim());
+            int stock = Integer.parseInt(productInfo[2].trim());
+            newProduct = new Product(title, price, stock);
+
+        } catch (NumberFormatException ex) {
+            System.err.println(ex.getMessage());
+        }
+
 
         return newProduct;
     }
@@ -59,7 +75,6 @@ public class Product {
 
     @Override
     public String toString() {
-        // TODO represent the product in the format: title, price, stock
-        return null;
+        return String.format("%s/%.2f/%d", title, price, stock);
     }
 }
