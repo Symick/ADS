@@ -2,9 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Scanner;
 import java.util.function.BiPredicate;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class ExtendedArrayList<E> extends ArrayList<E> {
@@ -35,7 +33,11 @@ public class ExtendedArrayList<E> extends ArrayList<E> {
     public E getLast(Predicate<E> filter) {
         E foundItem = null;
 
-        // TODO find the last item in the list that matches filter
+        for (E item: this) {
+            if(filter.test(item)) {
+                foundItem = item;
+            }
+        }
 
         return foundItem;
     }
@@ -50,6 +52,14 @@ public class ExtendedArrayList<E> extends ArrayList<E> {
 
         // TODO use the super class iterator to check all items
         //   and remove those who do not match the filter
+        Iterator<E> iterator = super.iterator();
+        while(iterator.hasNext()) {
+            E item = iterator.next();
+            if (!filter.test(item)) {
+                iterator.remove();
+                itemsHaveBeenRemoved = true;
+            }
+        }
 
         return itemsHaveBeenRemoved;
     }
@@ -64,8 +74,19 @@ public class ExtendedArrayList<E> extends ArrayList<E> {
      */
     public boolean removeSuccessiveDuplicates(BiPredicate<E,E> equalityTester) {
         boolean itemsHaveBeenRemoved = false;
+        int index = 0;
+        while (index < this.size() -1) {
+            E current = this.get(index);
+            E next = this.get(index + 1);
 
-        // TODO remove successive duplicates
+            if (equalityTester.test(current, next)) {
+                //if a item is removed don't increment the index, so that potential triple duplicates are spotted
+                this.remove(index + 1);
+                itemsHaveBeenRemoved = true;
+            } else {
+                index++; //if nothing is removed go to the next item in the list
+            }
+        }
 
         return itemsHaveBeenRemoved;
     }
