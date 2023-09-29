@@ -24,41 +24,54 @@ public class ProductsInventoryMain {
 
         // TODO sort all products alfabetically by title
         //  using List.sort and a Product instance helper method
+        products.sort(Product::compareTitle);
 
         System.out.printf("\nProducts by title:\n%s\n", products);
 
         // TODO sort all products by increasing price
         //  using List.sort and a Product instance helper method
+        products.sort(Product::comparePrice);
 
         System.out.printf("\nProducts by increasing price:\n%s\n", products);
 
         // TODO sort all products by decreasing price
         //  using List.sort and Comparator.comparingDouble
+        products.sort(Comparator.comparingDouble(Product::getPrice).reversed());
 
         System.out.printf("\nProducts by decreasing price:\n%s\n", products);
 
         // TODO sort all products by increasing inventory value ( = stock * price)
         //  using List.sort and a Product instance helper method
 
+        products.sort(Product::compareValue);
+
         System.out.printf("\nProducts by increasing inventory value:\n%s\n", products);
 
         // TODO reduce stocks of all products by half
         //  using .forEach and a lambda expression
+
+        products.forEach((product -> product.setStock(product.getStock() / 2)));
 
         System.out.printf("\nProducts inventory reduced by half:\n%s\n", products);
 
         // TODO reduce stocks of all products by 10 items
         //  using .forEach and a lambda expression
 
+        products.forEach(product -> product.setStock(product.getStock() - 10));
+
         System.out.printf("\nProducts inventory reduced by 10 items:\n%s\n", products);
 
         // TODO remove all products with a zero or negative stock
         //  using .removeIf and a lambda expression
+        products.removeIf(product -> product.getStock() <= 0);
 
         System.out.printf("\nProducts with positive inventory:\n%s\n", products);
 
         // TODO sort all products by decreasing inventory value ( = stock * price)
         //  using List.sort and a lambda expression
+        products.sort((product1, product2) -> {
+            return Double.compare((product1.getPrice() * product1.getStock()), (product2.getPrice() * product2.getStock()));
+        });
 
         System.out.printf("\nProducts by increasing inventory value:\n%s\n", products);
     }

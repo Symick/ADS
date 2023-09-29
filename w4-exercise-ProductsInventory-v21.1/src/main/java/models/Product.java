@@ -47,6 +47,18 @@ public class Product {
         return newProduct;
     }
 
+    public int compareTitle(Product other) {
+        return this.title.compareTo(other.getTitle());
+    }
+
+    public int comparePrice(Product other) {
+        return Double.compare(this.price, other.getPrice());
+    }
+
+    public int compareValue(Product other) {
+        return Double.compare((this.price * this.stock), (other.getPrice() * other.getStock()));
+    }
+
     public String getTitle() {
         return title;
     }
