@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -8,8 +9,22 @@ public class Main {
 ////        System.out.println(bigPower(new BigDecimal(1.0001), 10000));
 //        int pos = generateWallDesigns(5, "");
 //        System.out.println("Amount of designs " + pos);
-        System.out.println(calculateWallDesigns(45));
-        System.out.println(calculateWallDesignsIterative(45));
+//        System.out.println(calculateWallDesigns(45));
+//        System.out.println(calculateWallDesignsIterative(45));
+
+        Scanner input = new Scanner(System.in);
+        System.out.print("How many groups do you need? ");
+        int nGroups = input.nextInt();
+        System.out.print("How many students do you have? ");
+        int nStudents = input.nextInt();
+        System.out.println("\nYour groups:");
+        printGroups(nGroups, nStudents);
+        System.out.print("\nHow many additional international students do you have? ");
+        int nInternational = input.nextInt();
+        System.out.println("\nYour mixed groups:");
+        printGroups(nGroups, nStudents, nInternational);
+        System.out.println("\nYour labeled groups:");
+
     }
 
     static int factorial(int n) {
@@ -114,4 +129,32 @@ public class Main {
         }
         return designsPossibility[n];
     }
+
+    static void printGroups(int nGroups, int nStudents) {
+        if (nGroups % 2 ==0) {
+            int halfGroup = nGroups / 2;
+            int firstHalfOfStudents = nStudents / 2;
+            int secondHalfOfStudents = nStudents - firstHalfOfStudents;
+            printGroupHelper(halfGroup, firstHalfOfStudents, 0, 0);
+            printGroupHelper(halfGroup, secondHalfOfStudents, 0, firstHalfOfStudents);
+        } else {
+            printGroupHelper(nGroups, nStudents, 0, 0);
+        }
+    }
+
+    static void printGroupHelper(int remainingGroup, int remainingStudents, int nStudentInGroup, int studentNumber) {
+        if (remainingStudents <= 0) return; //base case if all groups are printed
+
+
+        int studentsInGroup = (int) Math.ceil(remainingStudents / (double) remainingGroup);
+        if (nStudentInGroup < studentsInGroup) {
+            System.out.print("s" + (remainingStudents - nStudentInGroup + studentNumber) + " ");
+            printGroupHelper(remainingGroup, remainingStudents, nStudentInGroup + 1, studentNumber);
+        } else {
+            System.out.println();
+            printGroupHelper(remainingGroup - 1, remainingStudents - studentsInGroup, 0, studentNumber);
+        }
+
+    }
+    static void printGroups(int nGroups, int nStudents, int nInternationals) {}
 }
