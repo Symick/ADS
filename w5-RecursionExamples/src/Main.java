@@ -12,18 +12,20 @@ public class Main {
 //        System.out.println(calculateWallDesigns(45));
 //        System.out.println(calculateWallDesignsIterative(45));
 
-        Scanner input = new Scanner(System.in);
-        System.out.print("How many groups do you need? ");
-        int nGroups = input.nextInt();
-        System.out.print("How many students do you have? ");
-        int nStudents = input.nextInt();
-        System.out.println("\nYour groups:");
-        printGroups(nGroups, nStudents);
-        System.out.print("\nHow many additional international students do you have? ");
-        int nInternational = input.nextInt();
-        System.out.println("\nYour mixed groups:");
-        printGroups(nGroups, nStudents, nInternational);
-        System.out.println("\nYour labeled groups:");
+//        Scanner input = new Scanner(System.in);
+//        System.out.print("How many groups do you need? ");
+//        int nGroups = input.nextInt();
+//        System.out.print("How many students do you have? ");
+//        int nStudents = input.nextInt();
+//        System.out.println("\nYour groups:");
+//        printGroups(nGroups, nStudents);
+//        System.out.print("\nHow many additional international students do you have? ");
+//        int nInternational = input.nextInt();
+//        System.out.println("\nYour mixed groups:");
+//        printGroups(nGroups, nStudents, nInternational);
+//        System.out.println("\nYour labeled groups:");
+//        printLabeledGroups(nGroups, nStudents, nInternational);
+        formationTest(2,2,2);
 
     }
 
@@ -125,13 +127,13 @@ public class Main {
         designsPossibility[1] = 1; // is wall is on foot long, only an upright design is possible. i.e. one
 
         for (int i = 2; i <= n; i++) {
-            designsPossibility[i] = designsPossibility[i-1] + designsPossibility[i-2]; // designs of i should be the sum of designs of previous to wall sizes
+            designsPossibility[i] = designsPossibility[i - 1] + designsPossibility[i - 2]; // designs of i should be the sum of designs of previous to wall sizes
         }
         return designsPossibility[n];
     }
 
     static void printGroups(int nGroups, int nStudents) {
-        if (nGroups % 2 ==0) {
+        if (nGroups % 2 == 0) {
             int halfGroup = nGroups / 2;
             int firstHalfOfStudents = nStudents / 2;
             int secondHalfOfStudents = nStudents - firstHalfOfStudents;
@@ -143,7 +145,7 @@ public class Main {
     }
 
     static void printGroupHelper(int remainingGroup, int remainingStudents, int nStudentInGroup, int studentNumber) {
-        if (remainingStudents <= 0) return; //base case if all groups are printed
+        if (remainingGroup <= 0 || remainingStudents <= 0) return; //base case if all groups are printed
 
 
         int studentsInGroup = (int) Math.ceil(remainingStudents / (double) remainingGroup);
@@ -156,5 +158,51 @@ public class Main {
         }
 
     }
-    static void printGroups(int nGroups, int nStudents, int nInternationals) {}
+
+    static void printGroups(int nGroups, int nStudents, int nInternationals) {
+        printGroupHelper(nGroups, nStudents, nInternationals, 0, 0);
+    }
+
+    static void printGroupHelper(int remainingGroups, int remainingLocals, int remainingInternationals, int nLocalsInGroup, int nInternationalsInGroup) {
+        if ((remainingInternationals <= 0 && remainingLocals <= 0) || remainingGroups <=0)
+            return; //base case if no students are being placed in a group
+
+        //now how many students are going to be in one team.
+        int totalStudentsInGroup = (int) Math.ceil((remainingLocals + remainingInternationals) / (double) remainingGroups);
+        int internationalsInGroup = (int) Math.ceil(remainingInternationals / (double) remainingGroups);
+        int localsInGroup = totalStudentsInGroup - internationalsInGroup;
+
+        if (nInternationalsInGroup == 0 && nLocalsInGroup == 0) {
+            System.out.print("G10" + remainingGroups + " ");
+        }
+
+
+        if (nInternationalsInGroup < internationalsInGroup) {
+            //add internationals to a group
+            System.out.print("i" + (remainingInternationals - nInternationalsInGroup) + " ");
+            printGroupHelper(remainingGroups, remainingLocals, remainingInternationals, nLocalsInGroup, nInternationalsInGroup + 1);
+        } else if (nLocalsInGroup < localsInGroup) {
+            // add locals to a group
+            System.out.print("s" + (remainingLocals - nLocalsInGroup) + " ");
+            printGroupHelper(remainingGroups, remainingLocals, remainingInternationals, nLocalsInGroup + 1, nInternationalsInGroup);
+        } else {
+            //move to the next group
+            System.out.println();
+            printGroupHelper(remainingGroups - 1, remainingLocals - localsInGroup, remainingInternationals - internationalsInGroup, 0, 0);
+        }
+    }
+    static void printLabeledGroups(int nGroups, int nLocals, int nInternationals){
+        printGroupHelper(nGroups, nLocals, nInternationals, 0, 0);
+    }
+
+    private static void formationTest(int maxGroups, int maxLocals, int maxInternationals) {
+        for (int nG = 0; nG <= maxGroups; nG++) {
+            for (int nL = 0; nL <= maxLocals; nL++)
+                for (int nI = 0; nI < maxInternationals; nI++) {
+                    System.out.println("\nLabeled groups (" + nG + "," + nL + "," + nI + "):");
+                    printLabeledGroups(nG, nL, nI);
+                }
+        }
+    }
 }
+
