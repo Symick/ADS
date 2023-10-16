@@ -176,7 +176,6 @@ public class Main {
             System.out.print("G10" + remainingGroups + " ");
         }
 
-
         if (nInternationalsInGroup < internationalsInGroup) {
             //add internationals to a group
             System.out.print("i" + (remainingInternationals - nInternationalsInGroup) + " ");
@@ -191,6 +190,7 @@ public class Main {
             printGroupHelper(remainingGroups - 1, remainingLocals - localsInGroup, remainingInternationals - internationalsInGroup, 0, 0);
         }
     }
+
     static void printLabeledGroups(int nGroups, int nLocals, int nInternationals){
         printGroupHelper(nGroups, nLocals, nInternationals, 0, 0);
     }
