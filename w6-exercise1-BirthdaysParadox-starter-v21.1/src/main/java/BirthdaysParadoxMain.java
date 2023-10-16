@@ -36,15 +36,18 @@ public class BirthdaysParadoxMain {
 		finished = System.nanoTime();
 		System.out.printf("Found %d people on day-%d after %.3f msec\n", result, ONE_DAY,(finished-started)/1E6);
 
+
 		started = System.nanoTime();
 		result = birthdays.countBirthdaysBetween(FROM_DAY, TO_DAY);
 		finished = System.nanoTime();
 		System.out.printf("Found %d people between day-%d and day-%d after %.3f msec\n", result, FROM_DAY, TO_DAY, (finished-started)/1E6);
 
+
 		started = System.nanoTime();
 		result = birthdays.findLastBirthdayOfYear();
 		finished = System.nanoTime();
 		System.out.printf("Found last birthday of year at day-%d after %.3f msec\n", result, (finished-started)/1E6);
+
 
 		started = System.nanoTime();
 		result = birthdays.countNumUniqueBirthdays();
@@ -52,6 +55,41 @@ public class BirthdaysParadoxMain {
 		System.out.printf("Found %d unique birthdays after %.3f msec\n", result, (finished-started)/1E6);
 
 		// TODO measure performance of other methods
+
+
+		started = System.nanoTime();
+		result = birthdays.findFirstNonBirthday();
+		finished = System.nanoTime();
+		System.out.printf("Found %d as first non birthday after %.3f msec\n", result, (finished-started)/1E6);
+
+
+		started = System.nanoTime();
+		result = birthdays.maxPeopleWithSameBirthday();
+		finished = System.nanoTime();
+		System.out.printf("Found %d people with the same birthday after %.3f msec\n", result, (finished-started)/1E6);
+
+
+		started = System.nanoTime();
+		result = birthdays.maxPeopleWithBirthdayInSameWeek();
+		finished = System.nanoTime();
+		System.out.printf("Found %d with the same birthdays in a week after %.3f msec\n", result, (finished-started)/1E6);
+
+
+		started = System.nanoTime();
+		result = birthdays.findMedianBirthday();
+		finished = System.nanoTime();
+		System.out.printf("Found median birthday %d after %.3f msec\n", result, (finished-started)/1E6);
+
+
+		started = System.nanoTime();
+		List<Integer> results = birthdays.findAllBirthdaysWithMaxPeople();
+		finished = System.nanoTime();
+		System.out.printf("Found  birthday with max people %s after %.3f msec\n", results, (finished-started)/1E6);
+
+		started = System.nanoTime();
+		results = birthdays.findBirthdaysCoveringHalfOfThePeople();
+		finished = System.nanoTime();
+		System.out.printf("Found  birthday with max people %s after %.3f msec\n", results, (finished-started)/1E6);
 
 	}
 }

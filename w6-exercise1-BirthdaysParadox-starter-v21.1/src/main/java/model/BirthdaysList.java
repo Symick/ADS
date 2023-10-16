@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class BirthdaysList {
 	protected static final int MAX_DAY = 365;
@@ -44,9 +41,13 @@ public class BirthdaysList {
 	 * @return		the number of people found
 	 */
 	public int countBirthdaysOn(int birthday) {
-		// TODO
-
-		return 0;
+		int count = 0;
+		for (int currentBirthday: birthdays) {
+			if (currentBirthday == birthday) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	/**
@@ -56,18 +57,29 @@ public class BirthdaysList {
 	 * @return		the number of people found
 	 */
 	public int countBirthdaysBetween(int fromBirthday, int toBirthday) {
-		// TODO
+		int count = 0;
 
-		return 0;
+		for (int birthday: birthdays) {
+			if (birthday >= fromBirthday && birthday <= toBirthday) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	/** finds the last day on the calendar that somebody celebrates a birthday.
 	 * @return		the day found
 	 */
 	public int findLastBirthdayOfYear() {
-		// TODO
+		int last = 0;
 
-		return 0;
+		for (int birthday: birthdays) {
+			if (birthday == MAX_DAY) return birthday;
+			if (birthday > last) {
+				last = birthday;
+			}
+		}
+		return last;
 	}
 
 	/**
@@ -75,9 +87,13 @@ public class BirthdaysList {
 	 * @return		number of birthdays found
 	 */
 	public int countNumUniqueBirthdays() {
-		// TODO
-
-		return 0;
+		int count = 0;
+		for (int birthday : birthdays) {
+			if (countBirthdaysOn(birthday) == 1) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	/** finds the first day on the calendar that nobody celebrates a birthday.
@@ -85,7 +101,11 @@ public class BirthdaysList {
 	 * 				return -1 if all days are birthdays
 	 */
 	public int findFirstNonBirthday() {
-		// TODO
+		for (int i = 1; i <= MAX_DAY; i++) {
+			if (countBirthdaysOn(i) == 0) {
+				return i;
+			}
+		}
 
 		return -1;
 	}
@@ -94,9 +114,16 @@ public class BirthdaysList {
 	 * @return		the number of people found
 	 */
 	public int maxPeopleWithSameBirthday() {
-		// TODO
+		int max = 0;
 
-		return 0;
+		for (int birthday : birthdays) {
+			int count = countBirthdaysOn(birthday);
+			if (count > max) {
+				max = count;
+			}
+		}
+
+		return max;
 	}
 
 	/** counts the maximum number of people celebrating their birthday in the same week
@@ -104,9 +131,15 @@ public class BirthdaysList {
 	 * @return		the number of people found
 	 */
 	public int maxPeopleWithBirthdayInSameWeek() {
-		// TODO
+		int max = 0;
 
-		return 0;
+		for (int birthday: birthdays) {
+			int countInWeek = countBirthdaysBetween(birthday, birthday + 6);
+			if (countInWeek > max) {
+				max = countInWeek;
+			}
+		}
+		return max;
 	}
 
 	/** finds the birthday such that half the people celebrate on or before that day
@@ -115,8 +148,13 @@ public class BirthdaysList {
 	 * 				return -1 if such day does not exist
 	 */
 	public int findMedianBirthday() {
-		// TODO
-
+		for (int i = 1; i <= MAX_DAY; i++) {
+			int before = countBirthdaysBetween(1, i);
+			int after = countBirthdaysBetween(i, MAX_DAY);
+				if (before >= birthdays.length /2 && after >= birthdays.length / 2) {
+					return i;
+				}
+		}
 		return 0;
 	}
 
@@ -124,9 +162,16 @@ public class BirthdaysList {
 	 * @return		the birthdays found
 	 */
 	public List<Integer> findAllBirthdaysWithMaxPeople() {
-		// TODO
+		ArrayList<Integer> birthdays = new ArrayList<>();
+		int maxBirthdays = maxPeopleWithSameBirthday();
 
-		return null;
+		for (int i = 1; i <= 365; i++) {
+			if (maxBirthdays == countBirthdaysOn(i)) {
+				birthdays.add(i);
+			}
+		}
+
+		return birthdays;
 	}
 
 	/** finds the shortest list of birthdays on which in total at least half of the people celebrate
@@ -134,9 +179,28 @@ public class BirthdaysList {
 	 * @return		the birthdays found
 	 */
 	public List<Integer> findBirthdaysCoveringHalfOfThePeople() {
-		// TODO
-
-		return null;
+		ArrayList<Integer> half = new ArrayList<>();
+		int total = 0;
+		for (int i = 0; i < birthdays.length; i++) {
+			int max = 0;
+			int nextHighestBirthday = 0;
+			for (int j = 0; j < birthdays.length; j++) {
+				if (birthdays[i] != birthdays[j]) {
+					int count = countBirthdaysOn(birthdays[j]);
+					if (half.contains(birthdays[j])) continue;
+					if (count > max) {
+						max = count;
+						nextHighestBirthday = birthdays[j];
+					}
+				}
+			}
+			half.add(nextHighestBirthday);
+			total += max;
+			if (total >= birthdays.length / 2) {
+				return half;
+			}
+		}
+		return half;
 	}
 
 	public String toString() {

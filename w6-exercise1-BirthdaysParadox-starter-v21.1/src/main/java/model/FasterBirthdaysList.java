@@ -17,8 +17,18 @@ public class FasterBirthdaysList extends BirthdaysList {
      */
     @Override
     public int countNumUniqueBirthdays() {
-        // TODO provide a faster implementation with use of auxiliary array
-        return super.countNumUniqueBirthdays();
+        int[] personWithBirthday = new int[MAX_DAY +1];
+        for (int i = 1; i <= MAX_DAY; i++) {
+            personWithBirthday[i] = countBirthdaysOn(i);
+        }
+
+        int count = 0;
+        for (int persons: personWithBirthday) {
+            if (persons == 1) {
+                count++;
+            }
+        }
+        return count;
     }
 
     // TODO override other methods that can be accelerated with help of auxiliary arrays.
