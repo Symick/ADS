@@ -8,15 +8,17 @@ public class BirthdaysParadoxMain {
 
 	public static void main(String[] args) {
 		BirthdaysList birthdays2500 = new BirthdaysList(2500, RANDOM_SEED);
-		birthdaysTester(birthdays2500);
+		FasterBirthdaysList fasterBirthdaysList = new FasterBirthdaysList(2500, RANDOM_SEED);
+		birthdaysTester(fasterBirthdaysList);
 		birthdaysTester(birthdays2500);
 
-		for (int n = 40000; n >= 5000; n /= 2) {
-			BirthdaysList birthdays = new BirthdaysList(n);
-			birthdaysTester(birthdays);
-			BirthdaysList fasterBirthdays = new FasterBirthdaysList(n);
-			birthdaysTester(fasterBirthdays);
-		}
+
+//		for (int n = 40000; n >= 5000; n /= 2) {
+//			BirthdaysList birthdays = new BirthdaysList(n);
+//			birthdaysTester(birthdays);
+//			BirthdaysList fasterBirthdays = new FasterBirthdaysList(n);
+//			birthdaysTester(fasterBirthdays);
+//		}
 	}
 
 	private static void birthdaysTester(BirthdaysList birthdays) {

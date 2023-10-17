@@ -116,7 +116,7 @@ public class BirthdaysList {
 	public int maxPeopleWithSameBirthday() {
 		int max = 0;
 
-		for (int birthday : birthdays) {
+		for (int birthday = 1; birthday <= MAX_DAY; birthday++) {
 			int count = countBirthdaysOn(birthday);
 			if (count > max) {
 				max = count;
@@ -181,6 +181,7 @@ public class BirthdaysList {
 	public List<Integer> findBirthdaysCoveringHalfOfThePeople() {
 		ArrayList<Integer> half = new ArrayList<>();
 		int total = 0;
+
 		for (int i = 0; i < birthdays.length; i++) {
 			int max = 0;
 			int nextHighestBirthday = 0;

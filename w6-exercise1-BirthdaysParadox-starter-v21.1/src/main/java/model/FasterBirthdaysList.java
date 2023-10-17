@@ -1,5 +1,8 @@
 package model;
 
+import javax.print.DocFlavor;
+import java.util.List;
+
 public class FasterBirthdaysList extends BirthdaysList {
     public FasterBirthdaysList(int numberOfPeople, long seed) {
         super(numberOfPeople, seed);
@@ -18,8 +21,8 @@ public class FasterBirthdaysList extends BirthdaysList {
     @Override
     public int countNumUniqueBirthdays() {
         int[] personWithBirthday = new int[MAX_DAY +1];
-        for (int i = 1; i <= MAX_DAY; i++) {
-            personWithBirthday[i] = countBirthdaysOn(i);
+        for (int days : birthdays) {
+           personWithBirthday[days]++;
         }
 
         int count = 0;
@@ -30,6 +33,61 @@ public class FasterBirthdaysList extends BirthdaysList {
         }
         return count;
     }
+
+    @Override
+    public int findFirstNonBirthday() {
+        boolean[] hasBirthday = new boolean[MAX_DAY +1];
+        for (int birthday : birthdays) {
+            hasBirthday[birthday] = true;
+        }
+        for (int i = 1; i < hasBirthday.length; i++) {
+            if (!hasBirthday[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public int maxPeopleWithSameBirthday() {
+        int[] peopleWithBirthday = new int[MAX_DAY +1];
+        for (int birthday : birthdays) {
+            peopleWithBirthday[birthday] ++;
+        }
+
+        for (int i = 1; i < peopleWithBirthday.length; i++) {
+
+        }
+        return 0;
+    }
+
+    @Override
+    public int maxPeopleWithBirthdayInSameWeek() {
+        int[] b = new int[MAX_DAY +1];
+        for (int birthday : birthdays) {
+            b[birthday] ++;
+        }
+
+        int max = b[1] + b[2] + b[3] + b[4] + b[5] + b[6] + b[7]; //initialy the num of birthdays for the first week
+        for (int i = 8; i < b.length ; i++) {
+            int nextWeek = max - b[i-7] + b[i];
+            if (nextWeek > max) {
+                max = nextWeek;
+            }
+        }
+        return max;
+    }
+
+    @Override
+    public int findMedianBirthday() {
+        return super.findMedianBirthday();
+    }
+
+    @Override
+    public List<Integer> findBirthdaysCoveringHalfOfThePeople() {
+        return super.findBirthdaysCoveringHalfOfThePeople();
+    }
+
 
     // TODO override other methods that can be accelerated with help of auxiliary arrays.
 
