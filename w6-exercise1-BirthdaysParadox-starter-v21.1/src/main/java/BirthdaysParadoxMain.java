@@ -7,18 +7,16 @@ public class BirthdaysParadoxMain {
 	private static final long RANDOM_SEED = 19670427;
 
 	public static void main(String[] args) {
-		BirthdaysList birthdays2500 = new BirthdaysList(2500, RANDOM_SEED);
-		FasterBirthdaysList fasterBirthdaysList = new FasterBirthdaysList(2500, RANDOM_SEED);
-		birthdaysTester(fasterBirthdaysList);
-		birthdaysTester(birthdays2500);
-
-
-//		for (int n = 40000; n >= 5000; n /= 2) {
-//			BirthdaysList birthdays = new BirthdaysList(n);
-//			birthdaysTester(birthdays);
-//			BirthdaysList fasterBirthdays = new FasterBirthdaysList(n);
-//			birthdaysTester(fasterBirthdays);
-//		}
+		for (int n = 1000; n <= 64000; n *= 2) {
+			BirthdaysList birthdays = new BirthdaysList(n);
+			birthdays.shuffle();
+			System.gc();
+			birthdaysTester(birthdays);
+			BirthdaysList fasterBirthdays = new FasterBirthdaysList(n);
+			fasterBirthdays.shuffle();
+			System.gc();
+			birthdaysTester(fasterBirthdays);
+		}
 	}
 
 	private static void birthdaysTester(BirthdaysList birthdays) {
@@ -30,8 +28,6 @@ public class BirthdaysParadoxMain {
 		List<Integer> resultsList;
 
 		System.out.printf("\nTesting class %s with a list of %d birthdays:\n", birthdays.getClass().getSimpleName(), birthdays.size());
-		birthdays.shuffle();
-		System.gc();
 
 		started = System.nanoTime();
 		result = birthdays.countBirthdaysOn(ONE_DAY);

@@ -1,6 +1,8 @@
 package model;
 
 import javax.print.DocFlavor;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FasterBirthdaysList extends BirthdaysList {
@@ -55,10 +57,13 @@ public class FasterBirthdaysList extends BirthdaysList {
             peopleWithBirthday[birthday] ++;
         }
 
+        int max = 0;
         for (int i = 1; i < peopleWithBirthday.length; i++) {
-
+            if(peopleWithBirthday[i] > max) {
+                max = peopleWithBirthday[i];
+            }
         }
-        return 0;
+        return max;
     }
 
     @Override
@@ -68,24 +73,79 @@ public class FasterBirthdaysList extends BirthdaysList {
             b[birthday] ++;
         }
 
-        int max = b[1] + b[2] + b[3] + b[4] + b[5] + b[6] + b[7]; //initialy the num of birthdays for the first week
+        int max = 0;
+        int nextWeek = b[1] + b[2] + b[3] + b[4] + b[5] + b[6] + b[7]; //initialy the num of birthdays for the first week
         for (int i = 8; i < b.length ; i++) {
-            int nextWeek = max - b[i-7] + b[i];
             if (nextWeek > max) {
                 max = nextWeek;
             }
+            nextWeek = nextWeek - b[i-7] + b[i];
         }
         return max;
     }
 
     @Override
+    public List<Integer> findAllBirthdaysWithMaxPeople() {
+        List<Integer> maxPeople = new ArrayList<>();
+        int maxBirthday = this.maxPeopleWithSameBirthday();
+        int[] b = new int[MAX_DAY +1];
+        for (int birthday : birthdays) {
+            b[birthday] ++;
+        }
+
+        for (int i = 1; i < b.length; i++) {
+            if (b[i] == maxBirthday) {
+                maxPeople.add(i);
+            }
+        }
+        return maxPeople;
+    }
+
+    @Override
     public int findMedianBirthday() {
-        return super.findMedianBirthday();
+        int[] b = new int[MAX_DAY +1];
+        for (int birthday : birthdays) {
+            b[birthday]++;
+        }
+
+        int before = 0;
+        int after = birthdays.length;
+        for (int i = 1; i < b.length; i++) {
+            before += b[i];
+            if (before >= birthdays.length / 2 && after >= birthdays.length / 2) {
+                return i;
+            }
+            after -= b[i];
+        }
+        return -1;
     }
 
     @Override
     public List<Integer> findBirthdaysCoveringHalfOfThePeople() {
-        return super.findBirthdaysCoveringHalfOfThePeople();
+        List<Integer> birthDaylist = new ArrayList<>();
+        int[] b = new int[MAX_DAY +1];
+        boolean[] isIncluded = new boolean[MAX_DAY + 1];
+        for (int birthday : birthdays) {
+            b[birthday]++;
+        }
+        int total = 0;
+        for (int i = 1; i <= MAX_DAY; i++) {
+            int max = 0;
+            int nextHighest = 0;
+
+            for (int j = 1; j <= MAX_DAY; j++) {
+                if (!isIncluded[j] && b[j] > max) {
+                    max = b[j];
+                    nextHighest = j;
+                }
+            }
+            birthDaylist.add(nextHighest);
+            isIncluded[nextHighest] = true;
+            total += max;
+
+            if (total >= this.birthdays.length /2) break;
+        }
+        return birthDaylist;
     }
 
 
