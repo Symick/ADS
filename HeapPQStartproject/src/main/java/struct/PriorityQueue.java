@@ -1,6 +1,8 @@
 package struct;
 
 
+import java.util.Arrays;
+
 public class PriorityQueue<I extends Comparable<I>> {
 
 	private Heap<I> myHeap;
@@ -8,14 +10,32 @@ public class PriorityQueue<I extends Comparable<I>> {
 	
 	public PriorityQueue() {
 		super();
-		/* klaar zetten van de Heap en .....? */
+		myHeap = new Heap<>();
+		pqSize = 0;
 	}
 	
-	public void enqueue(I newItem) { /* toevoegen op de juiste plek */ }
+	public void enqueue(I newItem) {
+		this.myHeap.addItem(newItem);
+		pqSize++;
+	}
 	
-	public I dequeue() { /* geeft het Item terug dat aan de beurt is en verwijdert het */ return null;}
+	public I dequeue() {
+		if (pqSize <=0) {
+			throw new IllegalStateException("Queue is empty");
+		}
+
+		I item = this.myHeap.removeItem();
+		pqSize--;
+		return item;
+	}
 	
-	public void addArrayToPQ(I[] nieuweLijst) { /* array met items toevoegen op basis van priority */}
+	public void addArrayToPQ(I[] nieuweLijst) {
+		for (I item: nieuweLijst) {
+			enqueue(item);
+		}
+	}
 	
-	public String toString() { /* geeft de lijst als String in volgorde van prioriteit */ return null;	}
+	public String toString() {
+		return myHeap.toString();
+	}
 }
