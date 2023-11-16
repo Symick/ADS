@@ -11,7 +11,7 @@ public class NamesSorterMain {
 
         Sorter<String> sorter = new Sorter<>();
 
-        SimpleTable<Double> results = new SimpleTable<>(7,15, Double::sum, (a,b)-> a*b);
+        SimpleTable<Double> results = new SimpleTable<>(5,15, Double::sum, (a,b)-> a*b);
 
         List<String> originalNames = new ArrayList<>();
         List<String> sortedOriginalNames;
