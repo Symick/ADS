@@ -34,6 +34,9 @@ public class HeapTestLauncher {
 		System.out.println(woordenHeap);
 		woordenHeap.addItem("Annet");
 		System.out.println(woordenHeap);
+		String[] namen = {"Julian", "Brian"};
+		woordenHeap.addArrayOfItems(namen);
+		System.out.println(woordenHeap);
 
 /*		Testcode om een lijst met student te genereren en die toe te voegen aan een Priority Queue
 */		
