@@ -30,20 +30,24 @@ public class HeapTestLauncher {
 		woordenHeap.makeHeap(namenLijst);
 		woordenHeap.addArrayOfItems(tweedeLijst);
 		System.out.println(woordenHeap);
-		
+		woordenHeap.removeItem();
+		System.out.println(woordenHeap);
+		woordenHeap.addItem("Annet");
+		System.out.println(woordenHeap);
+
 /*		Testcode om een lijst met student te genereren en die toe te voegen aan een Priority Queue
 */		
-		int aantalStudenten = 10;
-		Student[] studentList = Student.generateStudents(aantalStudenten);
-		PriorityQueue studentPQ = new PriorityQueue<>();
-		studentPQ.addArrayToPQ(studentList);
-		System.out.println(Arrays.toString(studentList));
-		// Maak een lijst van studenten op basis van prioriteit
-		ArrayList<Student> priorityList = new ArrayList<>();
-		for (int i = 0; i < aantalStudenten; i++) {
-			priorityList.add((Student) studentPQ.dequeue());
-		}
- 		System.out.println(priorityList);
+//		int aantalStudenten = 10;
+//		Student[] studentList = Student.generateStudents(aantalStudenten);
+//		PriorityQueue studentPQ = new PriorityQueue<>();
+//		studentPQ.addArrayToPQ(studentList);
+//		System.out.println(Arrays.toString(studentList));
+//		// Maak een lijst van studenten op basis van prioriteit
+//		ArrayList<Student> priorityList = new ArrayList<>();
+//		for (int i = 0; i < aantalStudenten; i++) {
+//			priorityList.add((Student) studentPQ.dequeue());
+//		}
+// 		System.out.println(priorityList);
 	}
 	
 	

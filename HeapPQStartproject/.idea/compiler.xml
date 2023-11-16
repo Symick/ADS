@@ -9,8 +9,5 @@
         <module name="HeapPQ" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="HeapPQ" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>
