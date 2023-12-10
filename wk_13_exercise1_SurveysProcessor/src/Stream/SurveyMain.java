@@ -1,12 +1,14 @@
 package Stream;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class SurveyMain {
     private static final int NUM_ITEMS = 10000;
+
     public static void main(String[] args) {
         System.out.println("Welcome to Survey processing with streams");
 
@@ -33,10 +35,28 @@ public class SurveyMain {
                 surveys.stream().min(Comparator.comparingDouble(Survey::getNetIncome)).orElse(null));
 
         //5. Collect into a map and print how many surveys have been submitted for each zip code.
-        //Make sure the output shows an ordered result by increasing zipCode
+        System.out.println("numSurveyPerZipcode: \n" +
+                surveys.stream().collect(Collectors.groupingBy(Survey::getZipCodeDigits, TreeMap::new, Collectors.counting())));
+
         //6. Calculate and print the map with minimum average income per person in the household by zip
         //code. (I.e. calculate the average income per person for each survey and find the minimum value
         //for each zip code).
+        System.out.println("minAverageIncomePerZipCode: \n" +
+                surveys.stream()
+                        .collect(Collectors.groupingBy(
+                                        Survey::getZipCodeDigits,
+                                        TreeMap::new,
+                                        Collectors.collectingAndThen(
+                                                Collectors.minBy(Comparator.comparingDouble(
+                                                        value -> value.getNetIncome() / value.getNumPeopleInHouseHold())),
+                                                list -> list.stream().mapToDouble(value -> value.getNetIncome() / value.getNumPeopleInHouseHold())
+                                                        .findFirst().orElse(0.0)
+                                                )
+                                )
+                        )
+        );
+
+
         //7. Calculate the average number of people in the household by responsent age category of ten
         //years. (I.e. category=10 covers ages 10-19, category=20 covers ages 20-29, etc.)
         //8. Calculate the average income per person in the household by zip code.
