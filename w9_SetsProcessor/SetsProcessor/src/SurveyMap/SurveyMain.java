@@ -32,6 +32,7 @@ public class SurveyMain {
             double income = survey.netIncome / survey.numPeopleInHouseHold;
             minIncomePersonInHousehold.merge(survey.zipCodeDigits, income, Double::min);
         }
+
         minIncomePersonInHousehold.forEach((zipCode, income) -> zipCodesByMinIncomePerPersonInHouseHold.put(income, zipCode));
 
         System.out.println(numSurveysByZipCode);
