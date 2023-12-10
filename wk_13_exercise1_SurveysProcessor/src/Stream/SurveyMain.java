@@ -1,10 +1,8 @@
 package Stream;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SurveyMain {
     private static final int NUM_ITEMS = 10000;
@@ -46,25 +44,35 @@ public class SurveyMain {
                         .collect(Collectors.groupingBy(
                                         Survey::getZipCodeDigits,
                                         TreeMap::new,
-                                        Collectors.collectingAndThen(
-                                                Collectors.minBy(Comparator.comparingDouble(
-                                                        value -> value.getNetIncome() / value.getNumPeopleInHouseHold())),
-                                                list -> list.stream().mapToDouble(value -> value.getNetIncome() / value.getNumPeopleInHouseHold())
-                                                        .findFirst().orElse(0.0)
+                                        Collectors.mapping(survey -> survey.getNetIncome() / survey.getNumPeopleInHouseHold(),
+                                                Collectors.reducing(Double.POSITIVE_INFINITY, Double::min)
                                                 )
                                 )
                         )
         );
 
-
         //7. Calculate the average number of people in the household by responsent age category of ten
         //years. (I.e. category=10 covers ages 10-19, category=20 covers ages 20-29, etc.)
+        System.out.println("AverageNumPeopleByAge: \n" +
+                surveys.stream().collect(Collectors.groupingBy(
+                        survey -> (survey.getAge() / 10) * 10,
+                        TreeMap::new,
+                        Collectors.averagingDouble(Survey::getNumPeopleInHouseHold)
+                ))
+                );
         //8. Calculate the average income per person in the household by zip code.
         //This equals the sum of all incomes of all surveys within a zip code area divided by the total
         //number of people in the corresponding households of that zip code area... Tough challenge?
-        //Hint1: Stream all surveys and use flatmap to replace each survey in the stream by a substream of
-        //(zipcode,incomePerPerson) entries, one for each person in the household. Then collect the
-        //stream of entries into a map...
-        //Hint2: Investigate Stream.generate(), Map.entry() and .limit()
+        System.out.println("averageIncomeOfPersonInHouseHoldByZipCode: \n" +
+                surveys.stream()
+                        .flatMap(survey -> {
+                            int zipcode = survey.getZipCodeDigits();
+                            double incomePerPerson = survey.getNetIncome() / survey.getNumPeopleInHouseHold();
+                            return Stream.generate(() -> Map.entry(zipcode, incomePerPerson)).limit(survey.getNumPeopleInHouseHold());
+                        }).collect(Collectors.groupingBy(
+                                Map.Entry::getKey,
+                                TreeMap::new,
+                                Collectors.averagingDouble(Map.Entry::getValue)
+                        )));
     }
 }
