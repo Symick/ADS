@@ -94,6 +94,11 @@ public class SUGraph<V extends Identifiable<ID>, ID> implements SimpleGraph<V, I
         return visited.size() == vertices.size();
     }
 
+    /**
+     * walk over all vertices connected to eachother, used for the isConnected method.
+     * @param currentVertex
+     * @param visited
+     */
     public void depthFirstSearch(V currentVertex, Set<V> visited) {
         visited.add(currentVertex); //add the current vertex to visited list
 
@@ -104,6 +109,83 @@ public class SUGraph<V extends Identifiable<ID>, ID> implements SimpleGraph<V, I
                 depthFirstSearch(vertex, visited);
             }
         }
+    }
+
+    @Override
+    public Queue<V> depthFirstSearch(V start, V target) {
+        return dfs(start, target, new HashSet<>());
+    }
+
+    public Deque<V> dfs(V current, V target, Set<V> visited) {
+        if (visited.contains(current)) return null;
+        visited.add(current);
+
+        //return a path with the target as a member
+        if (current.equals(target)) {
+            Deque<V> path = new LinkedList<>();
+            path.addLast(current);
+            return path;
+        }
+
+        //loop over all neighbours
+        for (V neighbour : getNeighbours(current)) {
+            Deque<V> path = dfs(neighbour, target, visited);
+            //if path exist the current has been visited in a path, add it to the front and return it for the next current
+            if (path != null) {
+                path.addFirst(current);
+                return path;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Queue<V> depthFirstSearch(ID start, ID target) {
+        return depthFirstSearch(vertices.get(start), vertices.get(target));
+    }
+
+    @Override
+    public Queue<V> breadthFirstSearch(V start, V target) {
+        //set up path and return if start == target
+        Deque<V> path = new LinkedList<>();
+        path.addLast(target);
+        if (start.equals(target)) {
+            return path;
+        }
+        //setup trackers, of vertices still to visite and from where each vertex was visited
+        Queue<V> stillToVisite = new LinkedList<>();
+        Map<V, V> visitedFrom = new HashMap<>();
+
+        stillToVisite.offer(start);
+        //starting point isn't visited from any other vertices, so the value in the map should be null
+        visitedFrom.put(start, null);
+
+        V current = stillToVisite.poll();
+        //loop over vertices, if there are still vertices to be found and the target isnot found
+        while (current != null) {
+            for (V neighbour : getNeighbours(current)) {
+                if (neighbour.equals(target)) {
+                    while (current != null) {
+                        path.addFirst(current);
+                        current = visitedFrom.get(current);
+                    }
+                    return path;
+                } else if (!visitedFrom.containsKey(neighbour)) {
+                    //add all neighbours to the queue and to the map to keep track
+                    visitedFrom.put(neighbour, current);
+                    stillToVisite.offer(neighbour);
+                }
+            }
+            current = stillToVisite.poll();
+        }
+
+        return null;
+    }
+
+
+    @Override
+    public Queue<V> breadthFirstSearch(ID start, ID target) {
+        return breadthFirstSearch(vertices.get(start), vertices.get(target));
     }
 
     @Override

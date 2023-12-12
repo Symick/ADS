@@ -1,6 +1,7 @@
 package graph;
 
 import java.util.Collection;
+import java.util.Queue;
 
 public interface SimpleGraph<V extends Identifiable<ID>, ID> {
     // vertices can be any class that can be identified by a value of any type ID
@@ -33,6 +34,14 @@ public interface SimpleGraph<V extends Identifiable<ID>, ID> {
 
     // produces a formatted string representation of the complete graph
     String getAdjacencyReport();
+
+    Queue<V> depthFirstSearch(V start, V target);
+
+    Queue<V> breadthFirstSearch(V start, V target);
+
+    Queue<V> depthFirstSearch(ID start, ID target);
+
+    Queue<V> breadthFirstSearch(ID start, ID target);
 
     // calculates whether the graph is connected
     boolean isConnected();
